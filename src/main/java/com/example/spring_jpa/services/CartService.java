@@ -11,8 +11,8 @@ import com.example.spring_jpa.model.User;
 import com.example.spring_jpa.repository.CartItemRepository;
 import com.example.spring_jpa.repository.CartRepository;
 import com.example.spring_jpa.repository.ProductRepository;
-import com.example.spring_jpa.requests.AddCartItemRequest;
-import com.example.spring_jpa.requests.RemoveCartItemRequest;
+import com.example.spring_jpa.payload.AddCartItemRequest;
+import com.example.spring_jpa.payload.RemoveCartItemRequest;
 
 import com.example.spring_jpa.util.IdGeneratorService;
 import jakarta.transaction.Transactional;

@@ -1,8 +1,9 @@
 package com.example.spring_jpa.controllers;
 
 import com.example.spring_jpa.model.Product;
-import com.example.spring_jpa.requests.AddProductRequest;
-import com.example.spring_jpa.requests.RemoveProductRequest;
+import com.example.spring_jpa.payload.AddProductRequest;
+import com.example.spring_jpa.payload.RemoveProductRequest;
+import com.example.spring_jpa.payload.UpdateProductRequest;
 import com.example.spring_jpa.services.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +22,13 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity getAllproducts(){
+    public ResponseEntity<?> getAllProducts(){
         List<Product>products = productService.getAllProducts();
         return ResponseEntity.ok(products);
     }
 
     @PostMapping("/add")
-    public ResponseEntity addProduct(@RequestBody AddProductRequest request){
+    public ResponseEntity<?> addProduct(@RequestBody AddProductRequest request){
 
         try{
             Product added =  productService.addProduct(request);
@@ -40,7 +41,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/remove")
-    public ResponseEntity removeProduct( @RequestBody RemoveProductRequest request){
+    public ResponseEntity<?> removeProduct( @RequestBody RemoveProductRequest request){
 
         try
         {
@@ -49,6 +50,18 @@ public class ProductController {
 
             return ResponseEntity.status(200).body(message);
         } catch (Exception e) {
+
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?>updateProduct(@RequestBody UpdateProductRequest request){
+
+        try {
+            Product updated = productService.updateProduct(request);
+            return ResponseEntity.status(200).body(updated);
+        } catch (Exception e){
 
             return ResponseEntity.status(400).body(e.getMessage());
         }

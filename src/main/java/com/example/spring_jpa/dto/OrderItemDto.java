@@ -5,6 +5,7 @@ import java.io.Serializable;
 public record OrderItemDto(
         String productId,
         String productName,
+        double productUnitPrice ,
         int quantity,
         double totalPrice,
         double discount

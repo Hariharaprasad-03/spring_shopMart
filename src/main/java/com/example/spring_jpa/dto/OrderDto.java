@@ -10,6 +10,7 @@ import com.example.spring_jpa.model.PaymentType;
 public record OrderDto(
         String id,
         String userId,
+        String userName ,
         double price,
         OrderStatus status,
         PaymentType paymentType,

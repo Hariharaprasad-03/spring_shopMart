@@ -41,8 +41,12 @@ public class Order {
     @JsonBackReference
     private User user;
 
+    @Column (name = "user_name")
+    private String userName ;
+
     @Column(name = "address")
     private String orderAddress ;
+
     @Column(name = "order_date")
     LocalDateTime orderDate;
 
@@ -72,11 +76,7 @@ public class Order {
         this.paymentStatus = builder.paymentStatus != null ? builder.paymentStatus : PaymentStatus.PENDING;
         this.paymentType = builder.paymentType != null ? builder.paymentType : PaymentType.CASHONDELIVERY;
         this.orderDate = builder.orderDate != null ? builder.orderDate : LocalDateTime.now();
-
-        // REMOVE THIS BLOCK (It's now handled by the logic above)
-        // if (this.orderList != null) {
-        //     this.setOrderList(builder.orderList);
-        // }
+        this.userName = builder.userName != null ? builder.userName : "";
     }
 
     public String getId() {
@@ -175,6 +175,8 @@ public class Order {
         private PaymentStatus paymentStatus;
         private PaymentType paymentType;
         private LocalDateTime orderDate = LocalDateTime.now();
+        private OrderStatus orderStatus = OrderStatus.PROCESSING;
+        private String userName;
 
 
         public Builder(String id, User user, List<OrderItem> orderList, double price) {
@@ -200,6 +202,11 @@ public class Order {
             this.user = user;
             System.out.println(this.user);
             return this;
+        }
+
+        public Builder withUserName(String userName){
+            this.userName = userName;
+            return this ;
         }
 
         public Builder withOrderList(List<OrderItem> orderList) {

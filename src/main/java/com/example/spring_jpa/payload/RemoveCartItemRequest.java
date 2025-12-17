@@ -1,4 +1,4 @@
-package com.example.spring_jpa.requests;
+package com.example.spring_jpa.payload;
 
 public class RemoveCartItemRequest {
 

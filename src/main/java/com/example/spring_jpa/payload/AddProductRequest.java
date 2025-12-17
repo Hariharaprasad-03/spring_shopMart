@@ -1,12 +1,12 @@
-package com.example.spring_jpa.requests;
+package com.example.spring_jpa.payload;
 
 public class AddProductRequest {
 
     private String productName ;
     private String productType ;
-    private double price ;
-    private  int stock ;
-    private double discount ;
+    private Double price ;
+    private  Integer stock ;
+    private Double discount ;
 
     public AddProductRequest(String productName, String productType, double price, int stock, double discount) {
         this.productName = productName;

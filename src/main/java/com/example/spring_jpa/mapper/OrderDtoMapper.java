@@ -25,6 +25,7 @@ public class OrderDtoMapper {
         return new OrderItemDto(
                 item.getProductId(),
                 item.getProductName(),
+                item.getProductUnitPrice(),
                 item.getQuantity(),
                 item.getTotalPrice(),
                 item.getDiscount()
@@ -44,6 +45,7 @@ public class OrderDtoMapper {
         return new OrderDto(
                 order.getId(),
                 order.getUser().getId(),
+                order.getUser().getName(),
                 order.getPrice(),
                 order.getStatus(),
                 order.getPaymentType(),

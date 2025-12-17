@@ -17,8 +17,13 @@ public class OrderItem {
     @Column(name = "product_id")
     private String productId ;
 
+    @Column(name = "product_unit_price")
+    private double productUnitPrice ;
+
     @Column(name = "quantity")
     private int quantity ;
+
+
 
     @Column(name = "totalPrice")
     private double totalPrice ;
@@ -100,5 +105,13 @@ public class OrderItem {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public double getProductUnitPrice() {
+        return productUnitPrice;
+    }
+
+    public void setProductUnitPrice(double productUnitPrice) {
+        this.productUnitPrice = productUnitPrice;
     }
 }

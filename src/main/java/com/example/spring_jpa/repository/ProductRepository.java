@@ -93,9 +93,23 @@ public interface ProductRepository extends JpaRepository<Product,String> {
             value = "SELECT product_name FROM products ",
             nativeQuery = true
     )
-    public List<String> getAllProductName();
+     List<String> getAllProductName();
 
 
+    @Modifying
+    @Transactional
+    @Query(
+            value = "UPDATE products " +
+                    "SET price = :price , discount = :discount , stock =:stock" +
+                    " WHERE product_id = :id ",
+            nativeQuery = true
+    )
+    int   updateProdcutDetails(
+            @Param("price") double price,
+            @Param("discount") double discount ,
+            @Param("stock") int stock ,
+            @Param("id") String id
+    );
 
 
 

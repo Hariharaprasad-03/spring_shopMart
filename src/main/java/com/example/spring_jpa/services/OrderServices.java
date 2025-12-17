@@ -6,7 +6,7 @@ import com.example.spring_jpa.exception.StackNotAvailableException;
 import com.example.spring_jpa.mapper.OrderDtoMapper;
 import com.example.spring_jpa.model.*;
 import com.example.spring_jpa.repository.OrderRepository;
-import com.example.spring_jpa.requests.CartCheckOutRequest;
+import com.example.spring_jpa.payload.CartCheckOutRequest;
 import com.example.spring_jpa.util.IdGeneratorService;
 
 import jakarta.persistence.EntityManager;
@@ -76,6 +76,7 @@ public class OrderServices {
             item.setProductId(productId);
             item.setQuantity(quantity);
             item.setProductName(productName);
+            item.setProductUnitPrice(product.getPrice());
             item.setDiscount(product.getDiscount());
             item.setTotalPrice(itemTotalPrice);
 
@@ -99,6 +100,7 @@ public class OrderServices {
         Order order = Order.builder()
                 .withId(idGenarator.generateId("ORD"))
                 .withUser(user)
+                .withUserName(user.getName())
                 .withOrderAddress(request.getDelivaryAddress())
                 .withPrice(orderPrice)
                 .withOrderList(preparedOrderItems)

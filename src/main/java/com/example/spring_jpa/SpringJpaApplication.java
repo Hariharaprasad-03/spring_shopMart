@@ -3,12 +3,12 @@ package com.example.spring_jpa;
 
 import com.example.spring_jpa.model.*;
 
+import com.example.spring_jpa.payload.UpdateProductRequest;
 import com.example.spring_jpa.repository.CartRepository;
 
-import com.example.spring_jpa.requests.AddCartItemRequest;
-import com.example.spring_jpa.requests.AddProductRequest;
-import com.example.spring_jpa.requests.CartCheckOutRequest;
-import com.example.spring_jpa.requests.RemoveProductRequest;
+import com.example.spring_jpa.payload.AddCartItemRequest;
+import com.example.spring_jpa.payload.AddProductRequest;
+import com.example.spring_jpa.payload.CartCheckOutRequest;
 import com.example.spring_jpa.services.CartService;
 import com.example.spring_jpa.services.OrderServices;
 import com.example.spring_jpa.services.ProductService;
@@ -98,6 +98,9 @@ public class SpringJpaApplication {
 				cartService.addCartItem(request4);
 
 				orderService.checkOut(checout);
+
+				UpdateProductRequest upRequest = new UpdateProductRequest("PROD00001" ,50,120,5);
+				productService.updateProduct(upRequest);
 
 
 

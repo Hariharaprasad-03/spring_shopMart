@@ -2,9 +2,10 @@ package com.example.spring_jpa.services;
 
 import com.example.spring_jpa.exception.NoProductExistException;
 import com.example.spring_jpa.model.Product;
+import com.example.spring_jpa.payload.UpdateProductRequest;
 import com.example.spring_jpa.repository.ProductRepository;
-import com.example.spring_jpa.requests.AddProductRequest;
-import com.example.spring_jpa.requests.RemoveProductRequest;
+import com.example.spring_jpa.payload.AddProductRequest;
+import com.example.spring_jpa.payload.RemoveProductRequest;
 import com.example.spring_jpa.util.IdGeneratorService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +83,27 @@ public class ProductService {
 
     public List<Product> getAllProducts(){
         return productRepository.findAll();
+    }
+
+
+    public Product updateProduct(UpdateProductRequest request) {
+
+        Product product = productRepository.findById(request.productId())
+                .orElseThrow(() ->
+                        new NoProductExistException("No product exists with that ID"));
+
+        int rows = productRepository.updateProdcutDetails(
+                request.price(),
+                request.discount(),
+                request.quantity(),
+                request.productId()
+        );
+
+        if (rows == 0) {
+            throw new RuntimeException("Update failed");
+        }
+
+        return productRepository.findById(request.productId()).get();
     }
 
 

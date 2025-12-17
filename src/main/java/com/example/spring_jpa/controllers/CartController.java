@@ -2,9 +2,9 @@ package com.example.spring_jpa.controllers;
 
 import com.example.spring_jpa.dto.CartDto;
 import com.example.spring_jpa.dto.OrderDto;
-import com.example.spring_jpa.requests.AddCartItemRequest;
-import com.example.spring_jpa.requests.CartCheckOutRequest;
-import com.example.spring_jpa.requests.RemoveCartItemRequest;
+import com.example.spring_jpa.payload.AddCartItemRequest;
+import com.example.spring_jpa.payload.CartCheckOutRequest;
+import com.example.spring_jpa.payload.RemoveCartItemRequest;
 import com.example.spring_jpa.services.CartService;
 import com.example.spring_jpa.services.OrderServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class CartController {
 
 
     @PostMapping("/addItem")
-    public ResponseEntity addToCart(@RequestBody AddCartItemRequest request){
+    public ResponseEntity<?> addToCart(@RequestBody AddCartItemRequest request){
 
         try {
             CartDto added = cartService.addCartItem(request);
@@ -34,7 +34,7 @@ public class CartController {
     }
 
     @DeleteMapping("/removeItem")
-    public ResponseEntity removeCartItem(@RequestBody RemoveCartItemRequest request) {
+    public ResponseEntity<?> removeCartItem(@RequestBody RemoveCartItemRequest request) {
 
         try {
             CartDto dto = cartService.removeItemFromCart(request);
@@ -46,7 +46,7 @@ public class CartController {
     }
 
     @PostMapping("/checkOut")
-    public ResponseEntity checkOut(@RequestBody CartCheckOutRequest request){
+    public ResponseEntity<?> checkOut(@RequestBody CartCheckOutRequest request){
         try {
             OrderDto order = orderServices.checkOut(request);
             return ResponseEntity.status(200).body(order);
