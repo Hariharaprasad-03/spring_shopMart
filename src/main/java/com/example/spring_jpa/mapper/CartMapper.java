@@ -1,6 +1,6 @@
 package com.example.spring_jpa.mapper;
 
-import com.example.spring_jpa.dto.CartDto;
+import com.example.spring_jpa.dto.CartDTO;
 import com.example.spring_jpa.dto.CartItemDto;
 import com.example.spring_jpa.model.Cart;
 import com.example.spring_jpa.model.CartItem;
@@ -21,13 +21,13 @@ public class CartMapper {
         );
     }
 
-    public CartDto toCartDto(Cart cart) {
+    public CartDTO toCartDto(Cart cart) {
         List<CartItemDto> items = cart.getItems().stream()
                 .map(this::toCartItemDto)
                 .toList();
 
         double total = cart.getTotalAmount();
 
-        return new CartDto(cart.getCartId(), items, total);
+        return new CartDTO(cart.getCartId(), items, total);
     }
 }

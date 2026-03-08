@@ -1,5 +1,6 @@
 package com.example.spring_jpa.repository;
 
+import com.example.spring_jpa.dto.TopProductDTO;
 import com.example.spring_jpa.model.Product;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @Repository
@@ -96,21 +98,35 @@ public interface ProductRepository extends JpaRepository<Product,String> {
      List<String> getAllProductName();
 
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Transactional
     @Query(
-            value = "UPDATE products " +
-                    "SET price = :price , discount = :discount , stock =:stock" +
-                    " WHERE product_id = :id ",
+            value = """
+        UPDATE products
+        SET price = :price,
+            discount = :discount,
+            stock = :stock
+        WHERE product_id = :id
+        """,
             nativeQuery = true
     )
-    int   updateProdcutDetails(
+    int updateProductDetails(
             @Param("price") double price,
-            @Param("discount") double discount ,
-            @Param("stock") int stock ,
+            @Param("discount") double discount,
+            @Param("stock") int stock,
             @Param("id") String id
     );
 
-
+    @Query("""
+SELECT new com.example.spring_jpa.dto.TopProductDTO(
+       oi.productId,
+       oi.productName,
+       SUM(oi.quantity)
+)
+FROM OrderItem oi
+GROUP BY oi.productId, oi.productName
+ORDER BY SUM(oi.quantity) DESC
+""")
+    List<TopProductDTO> findTopSellingProducts(org.springframework.data.domain.Pageable pageable);
 
 }

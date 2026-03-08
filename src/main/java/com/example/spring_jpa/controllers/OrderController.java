@@ -1,6 +1,5 @@
 package com.example.spring_jpa.controllers;
 
-
 import com.example.spring_jpa.dto.OrderDto;
 import com.example.spring_jpa.services.OrderServices;
 import org.springframework.http.ResponseEntity;
@@ -10,26 +9,28 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/orders")
 public class OrderController {
 
-    private  OrderServices orderServices;
+    private  final OrderServices orderServices;
 
     public OrderController(OrderServices orderServices) {
         this.orderServices = orderServices;
     }
 
-    @GetMapping("/getAll")
-    public ResponseEntity getAllOrders(){
+    @GetMapping
+    public ResponseEntity<?> getAllOrders(){
         List<OrderDto> lists = orderServices.getAllOrders();
         return ResponseEntity.status(200).body(lists);
     }
 
     @GetMapping("api/orders/{id}")
-    public ResponseEntity getAllOrdersOfUser(@PathVariable("id") String id){
+    public ResponseEntity<?>getAllOrdersOfUser(@PathVariable("id") String id){
 
         try {
             List<OrderDto> orders = orderServices.getAllOrdersOfUser(id);
@@ -40,6 +41,21 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/pending")
+    public ResponseEntity<?> getPendingOrders(){
+        List<OrderDto> dtos = orderServices.getPendingOrders();
+        return ResponseEntity.status(200).body(dtos);
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<?> getOdersCount(){
+
+        int count = orderServices.getOrdersCount();
+
+        Map<String , Integer> response = new HashMap<>();
+        response.put("orderCount",count);
+        return ResponseEntity.status(200).body(response);
+    }
 
 
 }

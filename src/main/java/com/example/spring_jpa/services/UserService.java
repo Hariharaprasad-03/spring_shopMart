@@ -1,8 +1,10 @@
 package com.example.spring_jpa.services;
 
 import com.example.spring_jpa.dto.OrderDto;
+import com.example.spring_jpa.dto.UserDto;
 import com.example.spring_jpa.exception.UserNotExistException;
 import com.example.spring_jpa.mapper.OrderDtoMapper;
+import com.example.spring_jpa.mapper.UserDtoMapper;
 import com.example.spring_jpa.model.Cart;
 import com.example.spring_jpa.model.Order;
 import com.example.spring_jpa.model.User;
@@ -25,6 +27,8 @@ public class UserService {
     IdGeneratorService idGeneratorService;
     @Autowired
     OrderDtoMapper mapper ;
+    @Autowired
+    UserDtoMapper userDtoMapper;
 
 
 
@@ -61,6 +65,10 @@ public class UserService {
             }
         }
         return dtos;
+    }
+
+    public List<UserDto> getAllUsers(){
+        return userDtoMapper.userlistTOUserDtoList(userRepository.findAll());
     }
 
 

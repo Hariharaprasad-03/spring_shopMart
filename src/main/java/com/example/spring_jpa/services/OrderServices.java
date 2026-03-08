@@ -2,6 +2,7 @@ package com.example.spring_jpa.services;
 
 
 import com.example.spring_jpa.dto.OrderDto;
+import com.example.spring_jpa.exception.InvalidRequestException;
 import com.example.spring_jpa.exception.StackNotAvailableException;
 import com.example.spring_jpa.mapper.OrderDtoMapper;
 import com.example.spring_jpa.model.*;
@@ -59,7 +60,7 @@ public class OrderServices {
             int quantity = Math.max(cartItem.getQuantity(), 0);
 
             if (!productService.isProductExist(productId, productName)) {
-                throw new IllegalStateException("Product not found: " + productId);
+                throw new InvalidRequestException("Product not found: " + productId);
             }
 
             int currentStock = productService.getStock(productId);
@@ -86,7 +87,7 @@ public class OrderServices {
         }
 
         if (preparedOrderItems.isEmpty() || orderPrice <= 0) {
-            throw new IllegalStateException("Cannot checkout an empty or invalid cart.");
+            throw new InvalidRequestException("Cannot checkout an empty or invalid cart.");
         }
 
 
@@ -133,6 +134,22 @@ public class OrderServices {
             orderDtos.add(mapper.toDto(order));
         }
         return orderDtos;
+    }
+
+    public List<OrderDto>getPendingOrders(){
+        List<OrderDto> orderDtos  = new ArrayList<>();
+        List<Order> orders = orderRepository.getPendingOrders();
+
+        for ( Order order : orders){
+
+            orderDtos.add(mapper.toDto(order));
+        }
+        return orderDtos;
+    }
+
+    public  int getOrdersCount(){
+
+        return orderRepository.getCount();
     }
 
 }

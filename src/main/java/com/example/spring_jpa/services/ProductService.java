@@ -5,7 +5,7 @@ import com.example.spring_jpa.model.Product;
 import com.example.spring_jpa.payload.UpdateProductRequest;
 import com.example.spring_jpa.repository.ProductRepository;
 import com.example.spring_jpa.payload.AddProductRequest;
-import com.example.spring_jpa.payload.RemoveProductRequest;
+
 import com.example.spring_jpa.util.IdGeneratorService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,6 @@ public class ProductService {
     @Autowired
     IdGeneratorService idGererator;
 
-    private long id = 10 ;
 
     public Product addProduct(AddProductRequest request){
 
@@ -29,12 +28,14 @@ public class ProductService {
             List<String> names = productRepository.getAllProductName();
 
             Optional<String> exist = names.stream()
-                    .filter(item->item.toLowerCase().equals(name.toLowerCase()))
+                    .filter(item-> item.equalsIgnoreCase(name))
                     .findFirst();
 
             if (exist.isPresent()){
                 throw new IllegalStateException("Product AlreadyExist");
             }
+
+
 
             Product newProduct = Product.builder()
                     .productId(idGererator.generateId("PROD"))
@@ -44,20 +45,20 @@ public class ProductService {
                     .discount(request.getDiscount())
                     .stock(request.getStock())
                     .build();
-            Product saved = productRepository.save(newProduct);
-            return saved ;
+            System.out.println(newProduct);
+            return productRepository.save(newProduct);
 
     }
 
-    public void removeProduct(RemoveProductRequest request){
+    public void removeProduct(String productId){
 
-        Optional<Product> productOptinal = productRepository.findById(request.getProductId());
+        Optional<Product> productOptinal = productRepository.findById(productId);
 
         if (productOptinal.isPresent()){
 
-            productRepository.removeProductBYId(request.getProductId());
+            productRepository.removeProductBYId(productId);
         }else {
-            throw new NoProductExistException("No product Available in product Id " + request.getProductId());
+            throw new NoProductExistException("No product Available in product Id " + productId);
         }
     }
 
@@ -92,7 +93,7 @@ public class ProductService {
                 .orElseThrow(() ->
                         new NoProductExistException("No product exists with that ID"));
 
-        int rows = productRepository.updateProdcutDetails(
+        int rows = productRepository.updateProductDetails(
                 request.price(),
                 request.discount(),
                 request.quantity(),

@@ -1,6 +1,6 @@
 package com.example.spring_jpa.controllers;
 
-import com.example.spring_jpa.dto.CartDto;
+import com.example.spring_jpa.dto.CartDTO;
 import com.example.spring_jpa.dto.OrderDto;
 import com.example.spring_jpa.payload.AddCartItemRequest;
 import com.example.spring_jpa.payload.CartCheckOutRequest;
@@ -25,7 +25,7 @@ public class CartController {
     public ResponseEntity<?> addToCart(@RequestBody AddCartItemRequest request){
 
         try {
-            CartDto added = cartService.addCartItem(request);
+            CartDTO added = cartService.addCartItem(request);
             return ResponseEntity.status(200).body(added);
         }
         catch (Exception e){
@@ -37,7 +37,7 @@ public class CartController {
     public ResponseEntity<?> removeCartItem(@RequestBody RemoveCartItemRequest request) {
 
         try {
-            CartDto dto = cartService.removeItemFromCart(request);
+            CartDTO dto = cartService.removeItemFromCart(request);
             return ResponseEntity.status(200).body(dto);
         }
         catch ( Exception e ){

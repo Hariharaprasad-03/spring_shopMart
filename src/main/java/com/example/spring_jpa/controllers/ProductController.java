@@ -21,7 +21,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<?> getAllProducts(){
         List<Product>products = productService.getAllProducts();
         return ResponseEntity.ok(products);
@@ -31,6 +31,7 @@ public class ProductController {
     public ResponseEntity<?> addProduct(@RequestBody AddProductRequest request){
 
         try{
+
             Product added =  productService.addProduct(request);
             return ResponseEntity.ok(added);
         } catch (IllegalStateException e)
@@ -40,19 +41,11 @@ public class ProductController {
 
     }
 
-    @DeleteMapping("/remove")
-    public ResponseEntity<?> removeProduct( @RequestBody RemoveProductRequest request){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
 
-        try
-        {
-            productService.removeProduct(request);
-            String message = "{ \"message \" : \"success\" }";
-
-            return ResponseEntity.status(200).body(message);
-        } catch (Exception e) {
-
-            return ResponseEntity.status(400).body(e.getMessage());
-        }
+        productService.removeProduct(id);
+        return ResponseEntity.noContent().build(); // 204
     }
 
     @PutMapping("/update")

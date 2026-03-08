@@ -1,6 +1,6 @@
 package com.example.spring_jpa.services;
 
-import com.example.spring_jpa.dto.CartDto;
+import com.example.spring_jpa.dto.CartDTO;
 import com.example.spring_jpa.exception.CartNotAvailableException;
 import com.example.spring_jpa.exception.NoProductExistException;
 import com.example.spring_jpa.mapper.CartMapper;
@@ -38,7 +38,7 @@ public class CartService {
     @Autowired
     private CartItemRepository cartItemRepository;
 
-    public CartDto addCartToUser(User user){
+    public CartDTO addCartToUser(User user){
         Cart userCart = new Cart();
         userCart.setCartId(idGenerator.generateId("CART"));
         userCart.setUser(user);
@@ -47,7 +47,7 @@ public class CartService {
     }
 
     @Transactional
-    public CartDto addCartItem(AddCartItemRequest request) {
+    public CartDTO addCartItem(AddCartItemRequest request) {
 
         Optional<Product> productOptional = productRepository.findById(request.getProductId());
         if (productOptional.isEmpty()) {
@@ -81,7 +81,7 @@ public class CartService {
     }
 
     @Transactional
-    public CartDto removeItemFromCart(RemoveCartItemRequest request) {
+    public CartDTO removeItemFromCart(RemoveCartItemRequest request) {
 
         Cart cart = cartRepository.findById(request.getCartId())
                 .orElseThrow(() -> new CartNotAvailableException("Cart not found"));
