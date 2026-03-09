@@ -56,7 +56,7 @@ ORDER BY COUNT(o) DESC
     @Query(value = """
         SELECT DATE(order_date) as day,
                COUNT(*) as totalOrders
-        FROM orders
+        FROM order_table
         GROUP BY DATE(order_date)
         ORDER BY day
     """, nativeQuery = true)

@@ -40,7 +40,7 @@ public class OrderServices {
 
 
 
-
+    // CartCheckOut - Order Service Layer
     @Transactional
     public OrderDto checkOut(CartCheckOutRequest request){
 
@@ -62,7 +62,7 @@ public class OrderServices {
             if (!productService.isProductExist(productId, productName)) {
                 throw new InvalidRequestException("Product not found: " + productId);
             }
-
+            // checking stock before Adding
             int currentStock = productService.getStock(productId);
             System.out.println(currentStock);
             if (currentStock < quantity) {
@@ -89,15 +89,13 @@ public class OrderServices {
         if (preparedOrderItems.isEmpty() || orderPrice <= 0) {
             throw new InvalidRequestException("Cannot checkout an empty or invalid cart.");
         }
-
-
-
+        // Decrease Stock
         for (OrderItem item : preparedOrderItems) {
 
             productService.decreaseStock(item.getProductId(), item.getQuantity());
         }
 
-
+        // Creating Order
         Order order = Order.builder()
                 .withId(idGenarator.generateId("ORD"))
                 .withUser(user)
@@ -113,7 +111,7 @@ public class OrderServices {
         cartService.clearUserCart(user);
         return mapper.toDto(order);
     }
-
+    // Get All Orders - for Next Proceeding
     public List<OrderDto> getAllOrders(){
         List<Order> orders = orderRepository.findAll();
         List<OrderDto> orderdtos = new ArrayList<>();
@@ -126,7 +124,6 @@ public class OrderServices {
     }
 
     public List<OrderDto> getAllOrdersOfUser(String id ){
-
         List<Order> orders = orderRepository.getAllOrderOfUser(id);
 
         List<OrderDto> orderDtos = new ArrayList<>();
@@ -141,7 +138,6 @@ public class OrderServices {
         List<Order> orders = orderRepository.getPendingOrders();
 
         for ( Order order : orders){
-
             orderDtos.add(mapper.toDto(order));
         }
         return orderDtos;
